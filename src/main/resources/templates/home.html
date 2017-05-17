@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Where Can I Stream</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/home">Logo</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/home">Home</a></li>
+                <li th:if="${user} and ${user.loginID} != null"><a href="/profile">Profile</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li th:if="${user} == null or ${user.loginID} == null"><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li th:if="${user} and ${user.loginID} != null">
+                    <span style="color:forestgreen">Logged in as: </span>
+                    <a href="/profile" style="display:inline-block; font-weight:600;">
+                        <span th:text="${user.loginID}"></span>
+                    </a>
+                    <a onclick="document.getElementById('logoutForm').submit();" style="display:inline-block">
+                        <span class="glyphicon glyphicon-log-out"></span>
+                        Logout
+                    </a>
+                    <form th:action="@{/logout}" method="post" id="logoutForm">
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    <div class="container-fluid text-center">
+        <div class="row content">
+            <div class="col-sm-2 sidenav">
+            </div>
+            <div class="col-sm-8 text-left">
+
+            </div>
+            <div class="col-sm-2 sidenav">
+            </div>
+        </div>
+    </div>
+    <div th:if="${login} ? 'true'" class="loginContainer">
+        <div class="modalHeader">
+            <a href="/home"> <span class="glyphicon glyphicon-remove-sign" style="color:red"/></a>
+        </div>
+        <div class="modalContent">
+
+            <div th:if="${logout}">
+                You have been logged out.
+            </div>
+            <div th:if="${error}">
+                Invalid username and password.
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div><label> User Name : <input type="text" name="username"/> </label></div>
+                <div><label> Password: <input type="password" name="password"/> </label></div>
+                <div><input type="submit" value="Sign In"/></div>
+            </form>
+
+            <div>
+                New user? <a href="/register">Register</a> new user.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
